@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "640464636787",
+    "project_id": "colorpallete-fad74",
+    "storage_bucket": "colorpallete-fad74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640464636787:android:b5e53a9e1bca9d9332d306",
+        "android_client_info": {
+          "package_name": "com.example.color_pallete_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640464636787-n0ksupfiuqjhnrfahi0e0h8hhh3gcdnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6wSKH7R44UzE5RUrZEB_9TZSr1JpqVu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640464636787-n0ksupfiuqjhnrfahi0e0h8hhh3gcdnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

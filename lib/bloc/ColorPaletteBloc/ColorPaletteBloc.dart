@@ -1,7 +1,7 @@
+import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocEvent.dart';
+import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocState.dart';
+import 'package:color_pallete_app/data/firebase/ColorPaletteFirebase.dart';
 import 'package:color_pallete_app/models/ColorPaletteModel.dart';
-import 'package:color_pallete_app/screens/ColorPalette/bloc/ColorPaletteBlocEvent.dart';
-import 'package:color_pallete_app/screens/ColorPalette/bloc/ColorPaletteBlocState.dart';
-import 'package:color_pallete_app/screens/ColorPalette/firebase/ColorPaletteFirebase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
@@ -13,12 +13,8 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
 
   @override
   Stream<ColorPaletteState> mapEventToState(ColorPaletteEvent event) async* {
-    final Type actionType = event.runtimeType;
-
     //! Criar uma nova paleta
-    if (actionType == ColorPaletteCreate) {
-      event as ColorPaletteCreate;
-
+    if (event is ColorPaletteCreate) {
       try {
         await colorPaletteFirebase.addColorPalette(
           json: event.colorPalette.toJson(),
@@ -32,9 +28,7 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
       }
     }
     //! Recuperar paletas cadastradas
-    else if (actionType == ColorPaletteRetrieve) {
-      event as ColorPaletteRetrieve;
-
+    else if (event is ColorPaletteRetrieve) {
       yield LoadingColorPalette();
 
       try {
@@ -51,9 +45,7 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
       }
     }
     //! Editar uma paleta
-    else if (actionType == ColorPaletteUpdate) {
-      event as ColorPaletteUpdate;
-
+    else if (event is ColorPaletteUpdate) {
       try {
         await colorPaletteFirebase.updateColorPalette(
           id: event.colorPalette.id,
@@ -68,9 +60,7 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
       }
     }
     //! Deletar uma paleta
-    else if (actionType == ColorPaletteDelete) {
-      event as ColorPaletteDelete;
-
+    else if (event is ColorPaletteDelete) {
       try {
         await colorPaletteFirebase.deleteColorPalette(
           id: event.id,

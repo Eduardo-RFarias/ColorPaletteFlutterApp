@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 abstract class MyTheme {
   static ThemeData lightTheme() {
     return ThemeData(
-      primaryColor: Colors.white,
-      accentColor: Colors.black,
+      primarySwatch: Colors.teal,
     );
   }
 
   static ThemeData darkTheme() {
     return ThemeData(
-      primaryColor: Colors.black,
-      accentColor: Colors.white,
+      primarySwatch: Colors.deepPurple,
     );
   }
 }

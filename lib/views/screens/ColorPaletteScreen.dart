@@ -57,7 +57,9 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
   }
 
   void showSnackBar(String text) {
-    WidgetsBinding.instance!.addPostFrameCallback(
+    final instance = WidgetsFlutterBinding.ensureInitialized();
+
+    instance.addPostFrameCallback(
       (_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

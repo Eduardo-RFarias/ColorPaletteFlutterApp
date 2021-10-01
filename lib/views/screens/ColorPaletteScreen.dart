@@ -5,9 +5,9 @@ import 'package:color_pallete_app/bloc/ColorFormBloc/ColorFormBlocState.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBloc.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocEvent.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocState.dart';
-import 'package:color_pallete_app/models/ColorPaletteModel.dart';
 import 'package:color_pallete_app/views/screens/CreateColorPaletteScreen.dart';
 import 'package:color_pallete_app/views/screens/EmpyColorPaletteScreen.dart';
+import 'package:color_pallete_app/views/screens/ListedColorPaletteScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,120 +56,6 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
     );
   }
 
-  void handleTap({
-    required BuildContext context,
-    required String id,
-    required String title,
-    required List<int> colors,
-  }) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-              value: BlocProvider.of<ColorPaletteBloc>(context),
-            ),
-            BlocProvider<ColorFormBloc>(
-              create: (context) {
-                return ColorFormBloc(
-                  initialState: ColorFormState(
-                    id: id,
-                    title: title,
-                    colors: colors,
-                  ),
-                );
-              },
-            ),
-          ],
-          child: CreateColorPaletteScreen(editing: true),
-        ),
-      ),
-    );
-  }
-
-  void handleDismiss({
-    required BuildContext context,
-    required String id,
-    required String title,
-  }) {
-    bloc.add(
-      ColorPaletteDelete(id: id, title: title),
-    );
-  }
-
-  List<Widget> colorCircles({
-    required List<int> colors,
-  }) {
-    List<Widget> list = [];
-
-    for (int i = 0; i < 5; i++) {
-      list.add(
-        Padding(
-          padding: EdgeInsets.all(5),
-          child: CircleAvatar(
-            backgroundColor: Color(colors[i]).withAlpha(0xff),
-            radius: 10,
-          ),
-        ),
-      );
-    }
-
-    return list;
-  }
-
-  ListView loadedStateScreen({
-    required BuildContext context,
-    required LoadedColorPalette state,
-  }) {
-    return ListView.builder(
-      itemCount: state.list.length,
-      itemBuilder: (context, index) {
-        ColorPalette item = state.list[index];
-
-        return Dismissible(
-          key: ValueKey(item),
-          direction: DismissDirection.startToEnd,
-          onDismissed: (_) => handleDismiss(
-            context: context,
-            id: item.id,
-            title: item.title,
-          ),
-          background: Container(
-            color: Colors.red,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Icon(Icons.delete, color: Colors.white),
-                  Text('Delete', style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
-          ),
-          child: ListTile(
-            title: Text(
-              item.title,
-              style: TextStyle(fontSize: 20),
-            ),
-            trailing: Icon(Icons.edit),
-            onTap: () => handleTap(
-              context: context,
-              id: item.id,
-              title: item.title,
-              colors: item.colors,
-            ),
-            contentPadding: EdgeInsets.all(10),
-            subtitle: Container(
-              child: Row(
-                children: colorCircles(colors: item.colors),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void showSnackBar(String text) {
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) {
@@ -204,10 +90,7 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
           }
           //! Estado de carregado
           else if (state is LoadedColorPalette) {
-            return loadedStateScreen(
-              context: context,
-              state: state,
-            );
+            return ListedColorPaletteScreen();
           }
           //! Estado de paleta criada
           else if (state is CreatedColorPalette) {

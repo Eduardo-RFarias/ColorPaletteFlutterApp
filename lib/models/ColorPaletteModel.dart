@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
-
 class ColorPalette {
   late String title;
   late String id;
-  late List<Color> colors;
+  late List<int> colors;
 
   ColorPalette({
     required this.id,
@@ -16,7 +14,7 @@ class ColorPalette {
     required Map<String, dynamic> json,
   }) {
     this.title = json['title'];
-    this.colors = json['colors'];
+    this.colors = json['colors'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {

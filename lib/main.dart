@@ -1,7 +1,7 @@
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBloc.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocState.dart';
-import 'package:color_pallete_app/views/ColorPaletteScreen.dart';
 import 'package:color_pallete_app/theme/theme.dart';
+import 'package:color_pallete_app/views/screens/ColorPaletteScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

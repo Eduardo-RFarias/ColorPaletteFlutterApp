@@ -6,7 +6,8 @@ import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBloc.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocEvent.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBlocState.dart';
 import 'package:color_pallete_app/models/ColorPaletteModel.dart';
-import 'package:color_pallete_app/views/EmpyColorPaletteScreen.dart';
+import 'package:color_pallete_app/views/screens/CreateColorPaletteScreen.dart';
+import 'package:color_pallete_app/views/screens/EmpyColorPaletteScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,13 +42,15 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
                 initialState: ColorFormState(
                   id: '',
                   title: 'Nova Paleta',
-                  colors: List.generate(
-                      5, (index) => Color(Random().nextInt(0xffffffff))),
+                  colors:
+                      List.generate(5, (index) => Random().nextInt(0xffffffff)),
                 ),
               ),
             )
           ],
-          child: Text('Unimplemented'), //TODO
+          child: CreateColorPaletteScreen(
+            editing: false,
+          ),
         ),
       ),
     );
@@ -57,7 +60,7 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
     required BuildContext context,
     required String id,
     required String title,
-    required List<Color> colors,
+    required List<int> colors,
   }) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -78,23 +81,24 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
               },
             ),
           ],
-          child: Text('Unimplemented'),
+          child: CreateColorPaletteScreen(editing: true),
         ),
       ),
-    ); //TODO
+    );
   }
 
   void handleDismiss({
     required BuildContext context,
     required String id,
+    required String title,
   }) {
     bloc.add(
-      ColorPaletteDelete(id: id),
+      ColorPaletteDelete(id: id, title: title),
     );
   }
 
   List<Widget> colorCircles({
-    required List<Color> colors,
+    required List<int> colors,
   }) {
     List<Widget> list = [];
 
@@ -103,7 +107,7 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
         Padding(
           padding: EdgeInsets.all(5),
           child: CircleAvatar(
-            backgroundColor: colors[i].withAlpha(0xff),
+            backgroundColor: Color(colors[i]).withAlpha(0xff),
             radius: 10,
           ),
         ),
@@ -124,9 +128,23 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
 
         return Dismissible(
           key: ValueKey(item),
+          direction: DismissDirection.startToEnd,
           onDismissed: (_) => handleDismiss(
             context: context,
             id: item.id,
+            title: item.title,
+          ),
+          background: Container(
+            color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                children: [
+                  Icon(Icons.delete, color: Colors.white),
+                  Text('Delete', style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
           ),
           child: ListTile(
             title: Text(
@@ -146,6 +164,18 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
                 children: colorCircles(colors: item.colors),
               ),
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showSnackBar(String text) {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(text),
           ),
         );
       },
@@ -179,10 +209,28 @@ class _ColorPalettesScreenState extends State<ColorPalettesScreen> {
               state: state,
             );
           }
-          //! Estado de algo foi modificado
-          else if (state is EditedColorPalette ||
-              state is CreatedColorPalette) {
+          //! Estado de paleta criada
+          else if (state is CreatedColorPalette) {
+            showSnackBar('A paleta "${state.title}" foi criada');
+
             bloc.add(ColorPaletteRetrieve());
+
+            return Container();
+          }
+          //! Estado de algo foi modificado
+          else if (state is EditedColorPalette) {
+            showSnackBar('A paleta "${state.title}" foi editada"');
+
+            bloc.add(ColorPaletteRetrieve());
+
+            return Container();
+          }
+          //! Estado de algo foi deletado
+          else if (state is DeletedColorPalette) {
+            showSnackBar('A paleta "${state.title}" foi deletada');
+
+            bloc.add(ColorPaletteRetrieve());
+
             return Container();
           }
           //! Estado de lista vazia

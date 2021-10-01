@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
-
 class ColorFormState {
   String id;
   String title;
-  late List<Color> colors;
+  late List<int> colors;
 
   ColorFormState({
     required this.id,

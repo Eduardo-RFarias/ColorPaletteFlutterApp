@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 abstract class ColorFormEvent {
   ColorFormEvent();
 }
@@ -8,7 +6,7 @@ class ChangeColorFormEvent extends ColorFormEvent {
   final String id;
   final int index;
   final String title;
-  final List<Color> colors;
+  final List<int> colors;
 
   ChangeColorFormEvent({
     required this.id,

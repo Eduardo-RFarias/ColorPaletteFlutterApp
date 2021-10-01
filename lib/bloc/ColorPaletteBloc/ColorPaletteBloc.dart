@@ -15,11 +15,12 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
   Stream<ColorPaletteState> mapEventToState(ColorPaletteEvent event) async* {
     //! Criar uma nova paleta
     if (event is ColorPaletteCreate) {
+      final json = event.colorPalette.toJson();
       try {
         await colorPaletteFirebase.addColorPalette(
-          json: event.colorPalette.toJson(),
+          json: json,
         );
-        yield CreatedColorPalette();
+        yield CreatedColorPalette(title: json['title']);
       } catch (error) {
         yield ErrorStateColorPalette(
           message: 'Erro ao adicionar dados ao Firebase',
@@ -46,12 +47,13 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
     }
     //! Editar uma paleta
     else if (event is ColorPaletteUpdate) {
+      final json = event.colorPalette.toJson();
       try {
         await colorPaletteFirebase.updateColorPalette(
           id: event.colorPalette.id,
-          json: event.colorPalette.toJson(),
+          json: json,
         );
-        yield EditedColorPalette();
+        yield EditedColorPalette(title: json['title']);
       } catch (error) {
         yield ErrorStateColorPalette(
           message: 'Erro ao editar dados do Firebase',
@@ -65,7 +67,7 @@ class ColorPaletteBloc extends Bloc<ColorPaletteEvent, ColorPaletteState> {
         await colorPaletteFirebase.deleteColorPalette(
           id: event.id,
         );
-        yield DeletedColorPalette();
+        yield DeletedColorPalette(title: event.title);
       } catch (error) {
         yield ErrorStateColorPalette(
           message: 'Erro ao apagar dados do Firebase',

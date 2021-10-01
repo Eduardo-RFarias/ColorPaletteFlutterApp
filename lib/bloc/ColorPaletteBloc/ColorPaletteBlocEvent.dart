@@ -22,8 +22,10 @@ class ColorPaletteUpdate extends ColorPaletteEvent {
 
 class ColorPaletteDelete extends ColorPaletteEvent {
   final String id;
+  final String title;
 
   ColorPaletteDelete({
     required this.id,
+    required this.title,
   });
 }

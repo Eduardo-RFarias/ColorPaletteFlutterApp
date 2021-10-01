@@ -2,7 +2,10 @@ import 'package:color_pallete_app/models/ColorPaletteModel.dart';
 
 abstract class ColorPaletteState {}
 
-class CreatedColorPalette extends ColorPaletteState {}
+class CreatedColorPalette extends ColorPaletteState {
+  final String title;
+  CreatedColorPalette({required this.title});
+}
 
 class LoadingColorPalette extends ColorPaletteState {}
 
@@ -15,9 +18,19 @@ class LoadedColorPalette extends ColorPaletteState {
   });
 }
 
-class EditedColorPalette extends ColorPaletteState {}
+class EditedColorPalette extends ColorPaletteState {
+  final String title;
 
-class DeletedColorPalette extends ColorPaletteState {}
+  EditedColorPalette({required this.title});
+}
+
+class DeletedColorPalette extends ColorPaletteState {
+  final String title;
+
+  DeletedColorPalette({
+    required this.title,
+  });
+}
 
 class ErrorStateColorPalette extends ColorPaletteState {
   final String message;

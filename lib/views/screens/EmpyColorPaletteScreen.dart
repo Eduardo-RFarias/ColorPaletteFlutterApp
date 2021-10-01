@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:color_pallete_app/bloc/ColorFormBloc/ColorFormBloc.dart';
 import 'package:color_pallete_app/bloc/ColorFormBloc/ColorFormBlocState.dart';
 import 'package:color_pallete_app/bloc/ColorPaletteBloc/ColorPaletteBloc.dart';
+import 'package:color_pallete_app/views/screens/CreateColorPaletteScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,16 +27,18 @@ class EmptyColorPaletteScreen extends StatelessWidget {
                     id: '',
                     title: 'Nova Paleta',
                     colors: List.generate(
-                        5, (index) => Color(Random().nextInt(0xFFFFFFFF))),
+                        5, (index) => Random().nextInt(0xFFFFFFFF)),
                   ),
                 );
               },
             ),
           ],
-          child: Text('Unimplemented'),
+          child: CreateColorPaletteScreen(
+            editing: false,
+          ),
         ),
       ),
-    ); //TODO
+    );
   }
 
   @override

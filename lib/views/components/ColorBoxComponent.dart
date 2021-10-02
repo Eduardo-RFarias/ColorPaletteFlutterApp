@@ -9,12 +9,15 @@ class ColorBoxComponent extends StatelessWidget {
   const ColorBoxComponent({Key? key, required this.index}) : super(key: key);
 
   Color invertColor(Color entrycolor) {
-    return Color.fromRGBO(
-      255 - entrycolor.red,
-      255 - entrycolor.green,
-      255 - entrycolor.blue,
-      entrycolor.opacity,
-    );
+    double middle = entrycolor.red * 0.299 +
+        entrycolor.green * 0.587 +
+        entrycolor.blue * 0.114;
+
+    if (middle > 150) {
+      return Colors.black;
+    } else {
+      return Colors.white;
+    }
   }
 
   @override
@@ -47,7 +50,10 @@ class ColorBoxComponent extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icon(Icons.refresh),
+                icon: Icon(
+                  Icons.refresh,
+                  color: invertColor(color),
+                ),
               )
             ],
           ),
